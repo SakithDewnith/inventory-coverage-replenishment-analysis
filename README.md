@@ -1,15 +1,16 @@
-# Inventory Performance & Replenishment Planning (Excel)
+# Inventory Coverage & Replenishment Analysis (Excel)
 
 ## Executive Summary
+
 Inventory affects both product availability and the cash tied up in stock, but total stock alone does not show where replenishment attention is most needed.
 
-Using **Excel (Power Query, PivotTables, and formulas)**, I analyzed 91,250 daily inventory records across 50 SKUs, 5 warehouses, and 10 suppliers during 2024. The analysis examined inventory value, replenishment status, forecast performance, and stock coverage. Demand changed seasonally while average stock per record remained within a relatively narrow range, with monthly coverage ranging from **15.2 days in April to 46.1 days in October**.
+Using **Excel (Power Query, PivotTables and formulas)**, I analyzed 91,250 daily inventory records across 50 SKUs, 5 warehouses and 10 suppliers during 2024. Demand changed seasonally while average stock per record stayed within a narrow range, so monthly coverage ranged from 15.2 days in April to 46.1 days in October.
 
-On the latest snapshot (30 December 2024), inventory was valued at $**1.40M at cost**. Comparing inventory with reorder points and with forecast demand during supplier lead time flagged 14 of 250 SKU-warehouse records for reorder review and 5 for potential lead-time shortfalls.
+On the latest snapshot (30 December 2024), inventory was valued at $1.40M at cost. Reorder-point and lead-time checks flagged 18 unique SKU–warehouse records for review: 14 at or below their reorder points and 5 with potential lead-time shortfalls, with 1 in both.
 
-These findings highlight opportunities to investigate seasonal replenishment planning and prioritize records for further review.
+These results point to specific actions: replenish the flagged records, set reorder points by season, and hold new orders on the highest-coverage items.
 
-The dataset is synthetic; findings are analytical examples, not real-company results.
+*The dataset is synthetic; findings are analytical examples, not real-company results.*
 
 <br>
 
@@ -26,12 +27,12 @@ Inventory levels that do not keep pace with changing demand can lead to replenis
 <br>
 
 ## Skills:
-**SQL**: PostgreSQL, Data exploration(EDA), data cleaning, validation checks, aggregation, conditional aggregation (FILTER), GROUP BY analysis, calculated metrices
 
-**Python**: Pandas, Matplotlib, SciPy and scikit-learn (Cramér's V, logistic regression cross-check), customer segmentation, factor screening, churn analysis, revenue exposure estimation, driver analysis, data visualization
-
-**Power BI**: DAX measures, data modeling, interactive filtering, KPI cards, data visualization
-<br>
+- **Excel:** Power Query, Excel Tables, PivotTables, PivotCharts, formulas, filtering and sorting, charts
+- **Data preparation:** data cleaning, validation checks, data quality log
+- **Inventory analysis:** stock coverage, reorder points, supplier lead-time analysis, inventory valuation
+- **Demand analysis:** seasonality, forecast accuracy (MAE and bias)
+- **Business analysis:** problem framing, prioritization, recommendations
 <br>
 
 ## Methodology
@@ -54,98 +55,75 @@ Inventory levels that do not keep pace with changing demand can lead to replenis
 
 ## Key Findings & Results
 
+The analysis covered **91,250 daily inventory records** across 50 SKUs, 5 warehouses and 10 suppliers during 2024. Seasonal results use the full year. Record-level results use the latest snapshot (**30 December 2024**, 250 SKU–warehouse records).
+
 - **Demand is seasonal.** Units sold range from 76,304 in September to 231,596 in March, while average stock per record stays within a narrow range (about 454 to 528 units).
 - **So coverage swings with the season.** Stock lasts about 15.2 days in April but about 46.1 days in October, which points to possible replenishment pressure in busy months and higher coverage in slow months.
-- **Replenishment checks flagged 18 unique SKU–warehouse records** on 30 December 2024: 14 at or below their reorder points and 5 with potential lead-time shortfalls, with 1 record in both. They hold about $60.4K, or 4.3% of the $1.40M inventory value.
+- **Replenishment checks flagged 18 unique SKU–warehouse records** on 30 December 2024: 14 at or below their reorder points and 5 with potential lead-time shortfalls, with 1 record in both. They hold about $60.4K, or 4.3% of the $1.40M inventory value. The full list is in the `Review_List` worksheet.
 - **A reorder-point check alone is not enough.** Four of the five potential-shortfall records were above their reorder points, and all five have supplier lead times of 13 to 14 days.
 - **Coverage differs most at record level, not by warehouse.** Warehouse averages are similar (24.4 to 27.5 days), but individual records range from 9.2 to 165.4 days. For example, SKU_41 has 19.6 days in WH_1 but 165.4 days in WH_5.
 - **Next step:** validate the flagged records against open purchase orders and expected deliveries, review the 5 shortfall records first, then investigate high-coverage records and seasonal reorder settings before making any operational change.
 
 *These are screening indicators from synthetic data, not confirmed stockouts or proven excess stock.*
 
+### Charts
 
-## Key Findings & Results
+<table>
+<tr>
+<td width="33%" valign="top">
 
-- **Demand varies significantly throughout the year**, ranging from 76,304 units in September to 231,596 in March, while inventory coverage ranges from 15.2 to 46.1 days.
-- **These demand changes create different inventory coverage conditions**, indicating that replenishment settings should be reviewed against seasonal demand rather than treated as constant throughout the year.
-- **Replenishment checks identified 18 unique SKU–warehouse records for review** in the latest snapshot: 14 at or below reorder points and 5 with potential lead-time shortfalls, including one record flagged by both checks.
-- **Reorder-point checks alone do not capture every potential risk:** four of the five records with potential lead-time shortfalls were still above their reorder points.
-- **Inventory coverage also varies considerably across individual records**, from 9.17 to 165.40 days, while the $1.40M inventory value at cost provides context for prioritizing further investigation.
-- **The next step is to validate the flagged records against purchase orders and expected deliveries**, then investigate unusually high coverage, review seasonal replenishment settings, and assess whether stock allocation needs attention before making operational changes.
+**1. Demand moves, stock does not: coverage is lowest in April and highest in October**
 
-  
+<img width="459" height="254" alt="Combo chart of monthly units sold and days of coverage in 2024" src="https://github.com/user-attachments/assets/c37dae27-6037-4061-b76f-9a440fa8f7ab" />
 
+</td>
+<td width="33%" valign="top">
 
-## Key Results & Business Insights
+**2. Coverage differs most between records: top 10 by days of coverage, 30 Dec 2024**
 
-The analysis covered **91,250 daily inventory records** across 50 SKUs, 5 warehouses and 10 suppliers during 2024. Using Excel, Power Query, PivotTables and formulas, I examined demand trends, inventory coverage, replenishment indicators and inventory value. Seasonal results use the full year. Record-level results use the latest snapshot (**30 December 2024**, 250 SKU–warehouse records).
+<img width="459" height="254" alt="Bar chart of the top 10 SKU-warehouse records by days of coverage" src="https://github.com/user-attachments/assets/66bc0279-2494-4562-9cc9-db44e0abde77" />
 
-### 1. Seasonal Demand and Inventory Coverage
-<br>
-<p align="center">
-<img width="459" height="254" alt="image" src="https://github.com/user-attachments/assets/c37dae27-6037-4061-b76f-9a440fa8f7ab" />
-</p>
+</td>
+<td width="33%" valign="top">
 
-Demand peaked at **231,596 units in March** and fell to **76,304 in September**, while average stock stayed between about 454 and 528 units per record. Coverage ranged from **15.2 days in April to 46.1 days in October**.
+**3. Warehouses look alike in stock value ($1.40M in total, 30 Dec 2024)**
 
-**Business insight:** The same stock supports about 15 days of demand in spring and about 46 in autumn, so reorder points and order quantities warrant a seasonal review.
+<img width="459" height="254" alt="Bar chart of inventory value at cost by warehouse" src="https://github.com/user-attachments/assets/c0c9ffb4-6cb1-40f8-9b50-5e70ef4b2e2d" />
 
-### 2. Replenishment Review Priorities
+</td>
+</tr>
+</table>
 
-| Review check (30 Dec 2024) | Records | Stock value |
-|---|---:|---:|
-| At or below reorder point | 14 | about $40.1K |
-| Potential lead-time shortfall | 5 | about $22.5K |
-| Meeting both checks | 1 | about $2.2K |
-| **Unique records flagged** | **18** | **about $60.4K (4.3% of $1.40M)** |
+### Supporting Observations
 
-Four of the five shortfall records were above their reorder points, and all five have supplier lead times of 13 to 14 days.
+- **High-coverage records:** average record-level coverage was 25.85 days, ranging from 9.17 to 165.40 days. The 10 highest-coverage records hold about $73.8K (5.3% of inventory value). High coverage alone does not confirm excess inventory, so check demand and upcoming orders before considering stock reductions.
+- **Warehouses:** average coverage ranged from 24.35 days (WH_1) to 27.49 days (WH_2). WH_2 holds the most stock value ($333,000.36) and WH_1 the least ($254,826.26).
+- **Stock allocation:** SKU_41 has 19.6 days of coverage in WH_1 but 165.4 days in WH_5, which points to a possible stock-allocation question, such as a transfer, to investigate after checking cost and timing.
+- **Forecast:** full-year forecast demand was about 1.832M units against 1.830M sold (mean absolute error 2.38 units per record), so the seasonal gap appears to come from stock planning and not demand prediction. This does not establish accuracy for individual SKUs, warehouses or months.
 
-**Business insight:** A long supplier wait needs more stock than a reorder point may provide, so both checks are needed. The 5 shortfall records are the first to review. The `Review_List` worksheet consolidates all 18.
+## Business Recommendations
 
-### 3. High-Coverage Inventory
-<br>
-<p align="center">
-<img width="459" height="254" alt="image" src="https://github.com/user-attachments/assets/66bc0279-2494-4562-9cc9-db44e0abde77" />
-</p>
+| # | What to do | Which items | Why |
+|---|---|---|---|
+| 1 | **Order more stock now** for the 5 shortfall records| SKU_27 (WH_4) about 119 units, SKU_44 (WH_3) about 70, SKU_29 (WH_2) about 66, SKU_50 (WH_4) about 64, SKU_2 (WH_1) about 1 | Stock won't cover demand while waiting for the supplier |
+| 2 | **Place re-orders** | for the 13 records at or below reorder point (about 133 units in total | They have reached their reorder point |
+| 3 | **Raise the re-order level** for items with long supplier waits | Items with 13 to 14 day delivery times | The current levels missed 4 of the 5 items that could run short |
+| 4 | **Plan orders by season:** order more before spring, and less in late summer and autumn | All products | Coverage is about 15 days in April but about 46 days in October |
+| 5 | **Hold new orders** for the 10 highest-coverage records | The 10 items with 52 to 165 days of stock, such as (SKU_41 in WH_5, SKU_16 in WH_4, SKU_33 in WH_3 and others)) | They hold up to 165 days of stock, about $73.8K in total |
+| 6 | **Move a small amount of SKU_41 from WH_5 to WH_1** instead of ordering | About 7 units of SKU_41 from WH_5 to WH_1 |  WH_5 has far more than it needs, and WH_1 is just below its reorder point |
 
-*Top 10 SKU–warehouse records by days of coverage on 30 December 2024.*
-Average record-level coverage was **25.85 days**, ranging from **9.17 to 165.40 days**. The 10 highest-coverage records hold about **$73.8K** (5.3% of inventory value).
+*Unit numbers are estimates from the 30 December forecast, and they don't count orders already placed.*
 
-**Business insight:** Investigate demand, upcoming orders and replenishment timing before considering stock reductions. High coverage alone does not confirm excess inventory.
+## Conclusion
 
-### 4. Warehouse Comparison
-<br>
-<p align="center">
-<img width="459" height="254" alt="image" src="https://github.com/user-attachments/assets/c0c9ffb4-6cb1-40f8-9b50-5e70ef4b2e2d" />
-</p>
-
-*Stock value at cost on 30 December 2024. Total: $1,404,610.84.*
-Average coverage ranged from **24.35 days in WH_1 to 27.49 days in WH_2**, so warehouses look alike on average. WH_2 held the highest inventory value at **$333,000.36**, compared with **$254,826.26** in WH_1. At record level, SKU_41 has **19.6 days of coverage in WH_1 but 165.4 days in WH_5**.
-
-**Business insight:** Warehouse averages can conceal differences between individual records. Review should focus on SKU–warehouse records, and differences like SKU_41's point to a possible stock-allocation question, such as a transfer, to investigate after checking cost and timing.
-
-### 5. Forecast Performance
-
-Full-year forecast demand was approximately **1.832 million units**, compared with **1.830 million sold**, with a mean absolute error of **2.38 units per record**.
-
-**Business insight:** Forecast and actual demand were close in aggregate, so the seasonal gap appears to come from stock planning and not demand prediction. This does not establish accuracy for individual SKUs, warehouses or months.
-
-## Recommended Business Follow-Up
-
-| Priority | Action | Confirm first |
-|---|---|---|
-| 1 | Review the 5 possible-shortfall records | Open purchase orders and delivery dates |
-| 2 | Review the other 13 records at or below reorder point | Whether the reorder point still fits demand |
-| 3 | Review reorder settings against seasonal demand and lead times | Whether the pattern repeats in other years |
-| 4 | Check high-coverage records, and a possible SKU_41 transfer, before any stock reduction | Planned orders, transfer cost and time |
-
-These are proposed actions, not implemented or tested changes.
+Stock does not follow seasonal demand, so coverage ranges from 15.2 days in April to 46.1 days in October. On 30 December 2024, 18 SKU–warehouse records were flagged for possible replenishment risk, and the highest-coverage records, led by SKU_41 in WH_5, were identified for possible excess stock. Warehouses look similar, so review should start with these individual records, ranked by risk and inventory value, and then move to seasonal reorder settings. Because the data has no real stockouts, stock targets or open orders, these results are signals to act on and check, not confirmed problems.
 
 ## Limitations
 
-- The dataset is **synthetic**, so the findings are illustrative and not results from a real company.
-- `Stockout_Flag` is 0 in every record, so actual stockouts cannot be measured. Replenishment indicators identify records for investigation, not confirmed stockouts.
-- High coverage does not prove excess inventory, and open purchase orders and optimal stock targets were not available.
-- Record-level results reflect a single snapshot, not live inventory.
+- The data is synthetic.
+- `Stockout_Flag` is 0 in every record, so real stockouts can't be measured.
+- High coverage does not prove excess stock, because the data has no target levels.
+- No purchase order or transfer cost data was available.
+- Results use one date (30 December 2024).
+- The recommendations have not been tested.
   
